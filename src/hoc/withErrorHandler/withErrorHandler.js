@@ -3,20 +3,20 @@ import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../Aux/Aux';
 
 const withErrorHandler = (WrappedComponent, axios) => {
-  return class extends Component {
-    state = {
-      error: null
-    }
 
-    componentDidMount() {
-      axios.interceptors.request.use(
+  return class extends Component {
+
+    constructor(props) {
+      super(props);
+
+      this.reqInterceptor = axios.interceptors.request.use(
         (req) => {
           this.setState({ error: null });
           return req;
         }
       );
 
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         (res) => {
           return res;
         },
@@ -24,6 +24,17 @@ const withErrorHandler = (WrappedComponent, axios) => {
           this.setState({ error: error });
         }
       );
+
+    }
+
+    state = {
+      error: null
+    }
+
+    componentWillUnmount() {
+      // console.log('Will unmount', this.reqInterceptor, this.resInterceptor);
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {
