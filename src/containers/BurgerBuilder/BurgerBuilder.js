@@ -36,7 +36,7 @@ class BurgerBuilder extends Component {
       )
       .catch(
         (error) => {
-          this.setState({error: true});
+          this.setState({ error: true });
         }
       );
   }
@@ -100,6 +100,23 @@ class BurgerBuilder extends Component {
 
   purchaseContinueHandler = () => {
 
+    let queryParams = [];
+
+    for (let ing in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(ing)
+        + '=' +
+        encodeURIComponent(this.state.ingredients[ing])
+      );
+    }
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryParams.join('&')
+    });
+
+    /*
+
     this.setState({ loading: true });
 
     // alert('You continue');
@@ -129,6 +146,8 @@ class BurgerBuilder extends Component {
         this.setState({ loading: false, purchasing: false });
       });
 
+    */
+
   }
 
   render() {
@@ -143,8 +162,8 @@ class BurgerBuilder extends Component {
     let orderSummary = null;
     let burger = <Spinner />;
 
-    if(this.state.error) {
-      burger = <p style={{textAlign: 'center'}}>Ingredients could not be loaded</p>;
+    if (this.state.error) {
+      burger = <p style={{ textAlign: 'center' }}>Ingredients could not be loaded</p>;
     }
     else if (this.state.ingredients) {
 
