@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 import styles from './ContactData.module.css';
 
@@ -10,11 +11,57 @@ class ContactData extends Component {
 
   state = {
     loading: false,
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      zipcode: ''
+    orderForm: {
+      name: {
+        elType: 'input',
+        elConfig: {
+          type: 'text',
+          placeholder: 'Your name',
+        },
+        value: ''
+      },
+      street: {
+        elType: 'input',
+        elConfig: {
+          type: 'text',
+          placeholder: 'Your street',
+        },
+        value: ''
+      },
+      zipCode: {
+        elType: 'input',
+        elConfig: {
+          type: 'text',
+          placeholder: 'Your zipcode',
+        },
+        value: ''
+      },
+      country: {
+        elType: 'input',
+        elConfig: {
+          type: 'text',
+          placeholder: 'Your country',
+        },
+        value: ''
+      },
+      email: {
+        elType: 'input',
+        elConfig: {
+          type: 'email',
+          placeholder: 'Your email',
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elType: 'select',
+        elConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' },
+          ]
+        },
+        value: ''
+      },
     }
   }
 
@@ -28,16 +75,16 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Max S.',
-        address: {
-          street: 'Teststraat 45',
-          zipCode: '23423',
-          country: 'NL'
-        },
-        email: 'text@test.com',
-      },
-      deliveryMethod: 'fastest'
+      // customer: {
+      //   name: 'Max S.',
+      //   address: {
+      //     street: 'Teststraat 45',
+      //     zipCode: '23423',
+      //     country: 'NL'
+      //   },
+      //   email: 'text@test.com',
+      // },
+      // deliveryMethod: 'fastest'
     }
 
     axios
@@ -56,16 +103,31 @@ class ContactData extends Component {
 
   render() {
 
+    const formElsArray = [];
+    for (let key in this.state.orderForm) {
+      formElsArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      });
+    }
+
     let form = (
       <form>
-        <input type="text" name="name" placeholder="Your name" />
-        <input type="email" name="email" placeholder="Your email" />
-        <input type="text" name="street" placeholder="Your street" />
-        <input type="text" name="zipcode" placeholder="Your zipcode" />
+
+        {formElsArray.map(formEl => (
+          <Input
+            elType={formEl.config.elType}
+            elConfig={formEl.config.elConfig}
+            value={formEl.config.value}
+            key={formEl.id}
+          />
+        ))}
+
         <Button
           btnType="Success"
           clicked={this.orderHandler}
         >Order</Button>
+        
       </form>
     );
 
@@ -81,7 +143,6 @@ class ContactData extends Component {
     );
 
   }
-
 
 }
 
