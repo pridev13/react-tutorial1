@@ -38,7 +38,7 @@ class Checkout extends Component {
 const mapStateToProps = (reduxState) => {
 
   return {
-    ings: reduxState.ingredients
+    ings: reduxState.bb.ingredients
   };
 
 };
