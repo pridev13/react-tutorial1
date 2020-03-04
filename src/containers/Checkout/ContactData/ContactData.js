@@ -112,7 +112,7 @@ class ContactData extends Component {
       orderData: formData
     }
 
-    this.props.onOrderBurger(order);
+    this.props.onOrderBurger(order, this.props.token);
 
   }
 
@@ -222,7 +222,8 @@ const mapStateToProps = (reduxState) => {
   return {
     ings: reduxState.bb.ingredients,
     prc: reduxState.bb.totalPrice,
-    ldng: reduxState.order.loading
+    ldng: reduxState.order.loading,
+    token: reduxState.auth.token
   }
 
 }
@@ -230,7 +231,7 @@ const mapStateToProps = (reduxState) => {
 const mapDispatchToProps = (dispatch) => {
 
   return {
-    onOrderBurger: (order) => dispatch(actions.purchaseBurger(order))
+    onOrderBurger: (order, token) => dispatch(actions.purchaseBurger(order, token))
   }
 
 }

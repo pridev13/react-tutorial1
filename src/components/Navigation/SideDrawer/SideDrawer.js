@@ -7,13 +7,13 @@ import Aux from '../../../hoc/Aux/Aux';
 import styles from './SideDrawer.module.css';
 
 const sideDrawer = (props) => {
-  
+
   let attClasses = [
     styles.SideDrawer,
     styles.Close
   ];
 
-  if(props.open) {
+  if (props.open) {
     attClasses = [
       styles.SideDrawer,
       styles.Open
@@ -31,7 +31,9 @@ const sideDrawer = (props) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems
+            isAuth={props.isAuth}
+          />
         </nav>
       </div>
     </Aux>

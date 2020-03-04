@@ -22,6 +22,24 @@ export const authFail = (err) => {
   }
 }
 
+export const authLogout = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  }
+}
+
+export const checkAuthTimeout = (expTime) => {
+  
+  return (dispatch) => {
+    
+    setTimeout(() => {
+      dispatch(authLogout());
+    }, expTime * 1000);
+
+  }
+
+}
+
 export const auth = (email, pw, isSignUp) => {
 
   return (dispatch) => {
@@ -45,12 +63,13 @@ export const auth = (email, pw, isSignUp) => {
         authData
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         dispatch(authSuccess(res.data.idToken, res.data.localId));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch((err) => {
-        console.log(err);
-        dispatch(authFail(err));
+        // console.log(err);
+        dispatch(authFail(err.response.data.error));
       });
 
   }

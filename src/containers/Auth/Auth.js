@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -135,9 +136,24 @@ class Auth extends Component {
       />
     ));
 
+    if(this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+
+    if(this.props.error) {
+      errorMessage = (
+        <p>
+          {this.props.error.message}
+        </p>
+      );
+    }
+
     return (
 
       <div className={styles.Auth}>
+        {errorMessage}
         <form
           onSubmit={this.submitHandler}
         >
@@ -166,10 +182,17 @@ class Auth extends Component {
 
 }
 
+const mapStateToProps = (reduxState) => {
+  return {
+    loading: reduxState.auth.loading,
+    error: reduxState.auth.error
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, pw, isSignUp) => dispatch(actions.auth(email, pw, isSignUp))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import Aux from '../Aux/Aux';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
@@ -26,10 +28,12 @@ class Layout extends Component {
       <Aux>
         <Toolbar
           drawerToggleClicked={this.sideDrawerToggleHandler}
-        />
+          isAuth={this.props.isAuth}
+          />
         <SideDrawer
           open={this.state.showSideDrawer}
           closed={this.sideDrawerClosedHandler}
+          isAuth={this.props.isAuth}
         />
         <main className={styles.Content}>
           {this.props.children}
@@ -39,4 +43,10 @@ class Layout extends Component {
   }
 };
 
-export default Layout;
+const mapStateToProps = (reduxState) => {
+  return {
+    isAuth: reduxState.auth.token !== null
+  }
+}
+
+export default connect(mapStateToProps)(Layout);
