@@ -25,7 +25,7 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false,
+        valid: true,
         touched: false
       },
       street: {
@@ -38,7 +38,7 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false,
+        valid: true,
         touched: false
       },
       zipCode: {
@@ -53,7 +53,7 @@ class ContactData extends Component {
           minLength: 4,
           maxLength: 4
         },
-        valid: false,
+        valid: true,
         touched: false
       },
       country: {
@@ -66,7 +66,7 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false,
+        valid: true,
         touched: false
       },
       email: {
@@ -79,7 +79,7 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false,
+        valid: true,
         touched: false
       },
       deliveryMethod: {
@@ -137,7 +137,7 @@ class ContactData extends Component {
   }
 
   inputChangedHandler = (e, id) => {
-    const updatedOrderForm ={
+    const updatedOrderForm = {
       ...this.state.orderForm
     }
     
