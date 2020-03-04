@@ -4,7 +4,8 @@ import { updateObject } from '../utility';
 const initState = {
   ingredients: null,
   totalPrice: 5.3,
-  error: false
+  error: false,
+  building: false
 };
 
 const INGREDIENT_PRICES = {
@@ -22,7 +23,8 @@ const addIngredient = (state, ing) => {
 
   return updateObject(state, {
     ingredients: updIngs,
-    totalPrice: state.totalPrice + INGREDIENT_PRICES[ing]
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[ing],
+    building: true
   });
 
 }
@@ -35,7 +37,8 @@ const removeIngredient = (state, ing) => {
 
   return updateObject(state, {
     ingredients: updIngs,
-    totalPrice: state.totalPrice - INGREDIENT_PRICES[ing]
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[ing],
+    building: true
   });
 
 }
@@ -50,7 +53,8 @@ const setIngredients = (state, ings) => {
       meat: ings.meat
     },
     error: false,
-    totalPrice: initState.totalPrice
+    totalPrice: initState.totalPrice,
+    building: false
   });
 
 }
