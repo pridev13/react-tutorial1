@@ -13,7 +13,7 @@ import styles from './ContactData.module.css';
 class ContactData extends Component {
 
   state = {
-    formIsValid: false,
+    formIsValid: true,
     orderForm: {
       name: {
         elType: 'input',
@@ -21,7 +21,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your name',
         },
-        value: '',
+        value: 'Piet',
         validation: {
           required: true
         },
@@ -34,7 +34,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your street',
         },
-        value: '',
+        value: 'Street 1',
         validation: {
           required: true
         },
@@ -47,7 +47,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your zipcode',
         },
-        value: '',
+        value: '1234',
         validation: {
           required: true,
           minLength: 4,
@@ -62,7 +62,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your country',
         },
-        value: '',
+        value: 'NL',
         validation: {
           required: true
         },
@@ -75,7 +75,7 @@ class ContactData extends Component {
           type: 'email',
           placeholder: 'Your email',
         },
-        value: '',
+        value: 'test@example.com',
         validation: {
           required: true
         },
