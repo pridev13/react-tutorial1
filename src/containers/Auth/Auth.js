@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Input from '../../components/UI/Input/Input';
@@ -13,7 +14,6 @@ import styles from './Auth.module.css'
 class Auth extends Component {
 
   state = {
-    // formIsValid: false,
     controls: {
       email: {
         elType: 'input',
@@ -48,53 +48,23 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-    if(!this.props.building) {
+    if (!this.props.building) {
       this.props.onSetAuthRedirectPath();
     }
-  }
-
-  checkValidity(value, rules) {
-
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = (value.trim() !== '' && isValid);
-    }
-
-    if (rules.minLength) {
-      isValid = (value.trim().length >= rules.minLength && isValid);
-    }
-
-    if (rules.maxLength) {
-      isValid = (value.trim().length <= rules.maxLength && isValid);
-    }
-
-    return isValid;
-
-  }
+  } 
 
   inputChangedHandler = (e, id) => {
-    const updatedForm = {
-      ...this.state.controls,
-      [id]: {
-        ...this.state.controls[id],
+
+    const updatedForm = updateObject(this.state.controls, {
+      [id]: updateObject(this.state.controls[id], {
         value: e.target.value,
+        valid: checkValidity(this.state.controls[id].value, this.state.controls[id].validation),
         touched: true
-      }
-    }
-
-    if (updatedForm[id].validation) {
-      updatedForm[id].valid = this.checkValidity(updatedForm[id].value, updatedForm[id].validation);
-    }
-
-    // let formIsValid = true;
-    // for (let id in updatedForm) {
-    //   formIsValid = updatedForm[id].valid && formIsValid;
-    // }
+      })
+    });
 
     this.setState({
-      controls: updatedForm,
-      // formIsValid: formIsValid
+      controls: updatedForm
     });
 
   }
@@ -143,13 +113,13 @@ class Auth extends Component {
       />
     ));
 
-    if(this.props.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
     let errorMessage = null;
 
-    if(this.props.error) {
+    if (this.props.error) {
       errorMessage = (
         <p>
           {this.props.error.message}
@@ -158,7 +128,7 @@ class Auth extends Component {
     }
 
     let redirect = null;
-    if(this.props.isAuth) {
+    if (this.props.isAuth) {
       redirect = <Redirect to={this.props.authRedirectPath} />;
     }
 

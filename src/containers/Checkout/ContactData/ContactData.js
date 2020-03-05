@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { updateObject, checkValidity } from '../../../shared/utility';
+
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -51,7 +53,8 @@ class ContactData extends Component {
         validation: {
           required: true,
           minLength: 4,
-          maxLength: 4
+          maxLength: 4,
+          isNumeric: true
         },
         valid: true,
         touched: false
@@ -77,7 +80,8 @@ class ContactData extends Component {
         },
         value: 'test@example.com',
         validation: {
-          required: true
+          required: true,
+          isEmail: true
         },
         valid: true,
         touched: false
@@ -117,44 +121,17 @@ class ContactData extends Component {
 
   }
 
-  checkValidity(value, rules) {
-
-    let isValid = true;
-
-    if(rules.required) {
-      isValid = (value.trim() !== '' && isValid);
-    }
-
-    if(rules.minLength) {
-      isValid = (value.trim().length >= rules.minLength && isValid);
-    }
-
-    if(rules.maxLength) {
-      isValid = (value.trim().length <= rules.maxLength && isValid);
-    }
-
-    return isValid;
-
-  }
-
-  inputChangedHandler = (e, id) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm
-    }
+   inputChangedHandler = (e, id) => {
     
-    const updatedFormEl = {
-      ...updatedOrderForm[id]
-    }
+    const updatedFormEl = updateObject(this.state.orderForm[id], {
+      value: e.target.value,
+      valid: checkValidity(e.target.value, this.state.orderForm[id].validation),
+      touched: true
+    });
 
-    updatedFormEl.value = e.target.value;
-
-    if(updatedFormEl.validation) {
-      updatedFormEl.valid = this.checkValidity(updatedFormEl.value, updatedFormEl.validation);
-    }
-
-    updatedFormEl.touched = true;
-
-    updatedOrderForm[id] = updatedFormEl;
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [id]: updatedFormEl
+    });
 
     let formIsValid = true;
     for(let id in updatedOrderForm) {
