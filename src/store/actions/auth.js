@@ -54,10 +54,10 @@ export const auth = (email, pw, isSignUp) => {
       returnSecureToken: true
     };
 
-    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBm0TK3OpgtbvDxEFK0BtIW38-Q2OODeDE';
+    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + process.env.REACT_APP_FIREBASE_API_KEY;
 
     if (!isSignUp) {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBm0TK3OpgtbvDxEFK0BtIW38-Q2OODeDE';
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + process.env.REACT_APP_FIREBASE_API_KEY;
     }
 
     axios
