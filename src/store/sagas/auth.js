@@ -53,3 +53,32 @@ export function* authSaga(action) {
   }
 
 }
+
+export function* authCheckStateSaga(action) {
+
+  const token = yield localStorage.getItem('token');
+  const userId = yield localStorage.getItem('userId');
+
+  if (!token || !userId) {
+    yield put(actions.authLogout());
+  }
+  else {
+    const expDate = yield new Date(localStorage.getItem('expirationDate'));
+
+    if (expDate > new Date()) {
+
+      yield put(actions.authSuccess(token, userId));
+
+      yield put(actions.checkAuthTimeout(
+        (expDate.getTime() - new Date().getTime()) / 1000
+      ));
+
+    }
+    else {
+      yield put(actions.authLogout());
+    }
+
+  }
+
+
+}
