@@ -12,7 +12,7 @@ import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
 import authReducer from './store/reducers/auth';
 
-import { watchAuth } from './store/sagas/index';
+import { watchAuth, watchBB } from './store/sagas/index';
 
 import './index.css';
 import App from './App';
@@ -33,6 +33,7 @@ const store = createStore(rootReducer, composeEnhancers(
 ));
 
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBB);
 
 const app = (
   <Provider store={store}>
