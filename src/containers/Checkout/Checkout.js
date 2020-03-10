@@ -1,48 +1,43 @@
-import React, { Component } from 'react';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
-// import * as actions from '../../store/actions/index';
 
-class Checkout extends Component {
+const Checkout = (props) => {
 
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
+  const checkoutCancelledHandler = () => {
+    props.history.goBack();
   }
 
-  checkoutContinuedHandler = () => {
-    this.props.history.replace('/checkout/step2');
+  const checkoutContinuedHandler = () => {
+    props.history.replace('/checkout/step2');
   }
 
-  render() {
+  let summary = <Redirect to="/" />;
 
-    let summary = <Redirect to="/" />;
-    
-    if (this.props.ings) {
-    
-      const purchasedRedirect = this.props.prchsd ? <Redirect to ="/" /> : null;
+  if (props.ings) {
 
-      summary = (
-        <div>
-          {purchasedRedirect}
-          <CheckoutSummary
-            ingredients={this.props.ings}
-            onCheckoutCancelled={this.checkoutCancelledHandler}
-            onCheckoutContinued={this.checkoutContinuedHandler}
-          />
-          <Route
-            path={this.props.match.path + '/step2'}
-            component={ContactData}
-          />
-        </div>
-      );
-    }
+    const purchasedRedirect = props.prchsd ? <Redirect to="/" /> : null;
 
-    return summary;
-
+    summary = (
+      <div>
+        {purchasedRedirect}
+        <CheckoutSummary
+          ingredients={props.ings}
+          onCheckoutCancelled={checkoutCancelledHandler}
+          onCheckoutContinued={checkoutContinuedHandler}
+        />
+        <Route
+          path={props.match.path + '/step2'}
+          component={ContactData}
+        />
+      </div>
+    );
   }
+
+  return summary;
 
 }
 
@@ -55,4 +50,4 @@ const mapStateToProps = (reduxState) => {
 
 };
 
-export default connect(mapStateToProps)(withRouter(Checkout));
+export default connect(mapStateToProps)(Checkout);
