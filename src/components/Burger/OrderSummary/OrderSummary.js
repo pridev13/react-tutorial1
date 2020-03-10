@@ -1,17 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
-// import styles from './Modal.module.css';
 
-class OrderSummary extends Component {
-  //This could be a functional component
-  render() {
+const orderSummary = (props) => {
 
-    const ingredientSummary = Object.keys(this.props.ingredients)
+    const ingredientSummary = Object.keys(props.ingredients)
       .map((igKey) => {
         return (
           <li key={igKey}>
-            <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {this.props.ingredients[igKey]}
+            <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {props.ingredients[igKey]}
           </li>
         );
       });
@@ -23,21 +20,19 @@ class OrderSummary extends Component {
         <ul>
           {ingredientSummary}
         </ul>
-        <p><strong>Total price: ${this.props.price}</strong></p>
+        <p><strong>Total price: ${props.price}</strong></p>
         <p>Continue to checkout?</p>
         <Button
           btnType="Danger"
-          clicked={this.props.purchaseCanceled}>
+          clicked={props.purchaseCanceled}>
           CANCEL</Button>
         <Button
           btnType="Success"
-          clicked={this.props.purchaseContinue}
+          clicked={props.purchaseContinue}
         >CONTINUE</Button>
       </Aux>
     );
 
-  }
-
 };
 
-export default OrderSummary;
+export default orderSummary;
