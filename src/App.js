@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -23,24 +23,46 @@ const Logout = React.lazy(() => {
   return import('./containers/Auth/Logout/Logout');
 });
 
+const App = (props) => {
 
-class App extends Component {
+  useEffect(() => {
+    props.onTryAutoLogin();
+  }, []);
 
-  componentDidMount() {
-    this.props.onTryAutoLogin();
-  }
+  let routes = (
+    <Switch>
 
-  render() {
+      <Route path="/auth"
+        render={() => (
+          <Auth />
+        )} />
 
-    let routes = (
+      <Route path="/" exact component={BurgerBuilder} />
+
+      <Redirect to="/" />
+
+    </Switch>
+  );
+
+  if (props.isAuth) {
+    routes = (
       <Switch>
 
-        <Route path="/auth"
-          render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Auth />
-            </Suspense>
-          )} />
+        <Route path="/checkout" render={() => (
+          <Checkout />
+        )} />
+
+        <Route path="/orders" render={() => (
+          <Orders />
+        )} />
+
+        <Route path="/logout" render={() => (
+          <Logout />
+        )} />
+
+        <Route path="/auth" render={() => (
+          <Auth />
+        )} />
 
         <Route path="/" exact component={BurgerBuilder} />
 
@@ -48,52 +70,15 @@ class App extends Component {
 
       </Switch>
     );
-
-    if (this.props.isAuth) {
-      routes = (
-        <Switch>
-
-          <Route path="/checkout" render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Checkout />
-            </Suspense>
-          )} />
-
-          <Route path="/orders" render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Orders />
-            </Suspense>
-          )} />
-
-          <Route path="/logout" render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Logout />
-            </Suspense>
-          )} />
-
-          <Route path="/auth" render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Auth />
-            </Suspense>
-          )} />
-
-          <Route path="/" exact component={BurgerBuilder} />
-
-          <Redirect to="/" />
-
-        </Switch>
-      );
-    }
-
-    return (
-      <div>
-        <Layout>
-          {routes}
-        </Layout>
-      </div>
-    );
-
   }
+
+  return (
+    <div>
+      <Layout>
+        <Suspense fallback={<div>Loading...</div>}>{routes}</Suspense>
+      </Layout>
+    </div>
+  );
 
 }
 
